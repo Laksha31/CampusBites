@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CampusBites | UPES Food Discovery</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="logo">
+            Campus<span>Bites</span>
+            <small>UPES FOOD DISCOVERY</small>
+        </div>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#shops">Food Shops</a>
+            <a href="#menu">Explore Menu</a>
+            <a href="#recommendations">Recommendations</a>
+        </nav>
+
+        <a href="#menu" class="nav-button">Explore Food</a>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <p class="tagline">YOUR CAMPUS, YOUR FOOD, YOUR CHOICE</p>
+
+            <h1>
+                Discover the best food
+                <span>around your campus.</span>
+            </h1>
+
+            <p class="hero-description">
+                Explore food outlets at UPES, compare prices,
+                discover your favourite dishes and find food
+                that fits your budget.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#menu" class="primary-button">
+                    Explore Menu
+                </a>
+
+                <a href="#recommendations" class="secondary-button">
+                    Find Food for My Budget
+                </a>
+            </div>
+
+        </div>
+
+        <div class="hero-card">
+            <div class="food-icon">🍔</div>
+            <p>Good food. Better choices.</p>
+            <h2>Made for UPES students.</h2>
+        </div>
+
+    </section>
+
+
+    <!-- Statistics -->
+    <section class="stats" id="shops">
+
+        <div class="stat-card">
+            <h2 id="shopCount">6</h2>
+            <p>Food Shops</p>
+        </div>
+
+        <div class="stat-card">
+            <h2 id="itemCount">363</h2>
+            <p>Menu Items</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>₹10+</h2>
+            <p>Starting Price</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>UPES</h2>
+            <p>Campus Focus</p>
+        </div>
+
+    </section>
+
+
+    <!-- Food Shops -->
+    <section class="section" id="shopSection">
+
+        <div class="section-heading">
+            <p class="tagline">EXPLORE THE CAMPUS</p>
+            <h2>Discover Food Shops</h2>
+            <p>Find your favourite food outlets at UPES.</p>
+        </div>
+
+        <div class="shop-container" id="shopContainer">
+            <p>Loading food shops...</p>
+        </div>
+
+    </section>
+
+
+    <!-- Menu Section -->
+    <section class="section menu-section" id="menu">
+
+        <div class="section-heading">
+            <p class="tagline">FIND YOUR FAVOURITE</p>
+            <h2>Explore the Menu</h2>
+            <p>Search dishes and discover prices across campus.</p>
+        </div>
+
+        <div class="filters">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search for a dish..."
+            >
+
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="Beverages">Beverages</option>
+                <option value="Desserts">Desserts</option>
+                <option value="South Indian">South Indian</option>
+                <option value="Main Course">Main Course</option>
+                <option value="Fast Food">Fast Food</option>
+                <option value="Snacks">Snacks</option>
+                <option value="Soups">Soups</option>
+            </select>
+
+            <select id="shopFilter">
+                <option value="">All Shops</option>
+            </select>
+
+            <input
+                type="number"
+                id="priceFilter"
+                placeholder="Maximum price (₹)"
+                min="0"
+            >
+
+            <button id="searchButton">Search</button>
+
+        </div>
+
+        <div class="food-container" id="foodContainer">
+            <p>Loading menu...</p>
+        </div>
+
+    </section>
+
+
+    <!-- Recommendations -->
+    <section class="section recommendation-section" id="recommendations">
+
+        <div class="section-heading">
+            <p class="tagline">SMART FOOD DISCOVERY</p>
+            <h2>Find Food Within Your Budget</h2>
+            <p>Tell us your budget and discover affordable dishes.</p>
+        </div>
+
+        <div class="recommendation-form">
+
+            <input
+                type="number"
+                id="budgetInput"
+                placeholder="Enter your budget (₹)"
+                min="1"
+            >
+
+            <select id="recommendCategory">
+                <option value="">Any Category</option>
+                <option value="Beverages">Beverages</option>
+                <option value="Desserts">Desserts</option>
+                <option value="South Indian">South Indian</option>
+                <option value="Main Course">Main Course</option>
+                <option value="Fast Food">Fast Food</option>
+                <option value="Snacks">Snacks</option>
+                <option value="Soups">Soups</option>
+            </select>
+
+            <button id="recommendButton">
+                Find Recommendations
+            </button>
+
+        </div>
+
+        <div class="food-container" id="recommendationContainer">
+        </div>
+
+    </section>
+
+
+    <!-- Footer -->
+    <footer>
+        <h2>CampusBites</h2>
+        <p>Discover. Compare. Eat.</p>
+        <p>Made for UPES students | 2026</p>
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
