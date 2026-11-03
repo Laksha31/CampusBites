@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,65 +13,101 @@
 
 <body>
 
-    <!-- Navigation Bar -->
+    <!-- ================= NAVIGATION BAR ================= -->
+
     <header class="navbar">
-        <div class="logo">
-            Campus<span>Bites</span>
+
+        <a href="#home" class="logo">
+            Campus<span>Bites.</span>
             <small>UPES FOOD DISCOVERY</small>
-        </div>
+        </a>
 
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#shops">Food Shops</a>
-            <a href="#menu">Explore Menu</a>
-            <a href="#recommendations">Recommendations</a>
-        </nav>
+        <nav class="nav-links">
+    <a href="#home">Home</a>
+    <a href="#shops">Food Shops</a>
+    <a href="#menu">Explore Menu</a>
+    <a href="#recommendations">Recommendations</a>
+    <a href="#reviews">Reviews</a>
+</nav>
 
-        <a href="#menu" class="nav-button">Explore Food</a>
+        <a href="#menu" class="nav-button">Explore Food ↗</a>
+
     </header>
 
 
-    <!-- Hero Section -->
+    <!-- ================= HERO SECTION ================= -->
+
     <section class="hero" id="home">
 
         <div class="hero-content">
 
-            <p class="tagline">YOUR CAMPUS, YOUR FOOD, YOUR CHOICE</p>
+            <span class="tagline">
+                YOUR CAMPUS. YOUR FOOD. YOUR CHOICE.
+            </span>
 
             <h1>
-                Discover the best food
-                <span>around your campus.</span>
+                Good food is just
+                <span>around the corner.</span>
             </h1>
 
-            <p class="hero-description">
-                Explore food outlets at UPES, compare prices,
-                discover your favourite dishes and find food
-                that fits your budget.
+            <p>
+                Discover food outlets at UPES, explore menus,
+                compare prices and find delicious meals
+                that fit your budget.
             </p>
 
             <div class="hero-buttons">
+
                 <a href="#menu" class="primary-button">
-                    Explore Menu
+                    Explore Menu →
                 </a>
 
                 <a href="#recommendations" class="secondary-button">
-                    Find Food for My Budget
+                    Find Food Within My Budget
                 </a>
+
+            </div>
+
+            <div class="hero-note">
+                🍽️ Discover. Compare. Eat.
             </div>
 
         </div>
 
-        <div class="hero-card">
-            <div class="food-icon">🍔</div>
-            <p>Good food. Better choices.</p>
-            <h2>Made for UPES students.</h2>
+        <div class="hero-visual">
+
+            <div class="hero-food-card">
+
+                <div class="food-emoji">🍔</div>
+
+                <span class="food-card-label">
+                    MADE FOR STUDENTS
+                </span>
+
+                <h2>Your next favourite meal awaits!</h2>
+
+                <p>
+                    Explore 363 menu items across UPES food outlets.
+                </p>
+
+            </div>
+
+            <div class="floating-card">
+                <span>💰</span>
+                <div>
+                    <strong>Budget Friendly</strong>
+                    <small>Find food that fits your pocket</small>
+                </div>
+            </div>
+
         </div>
 
     </section>
 
 
-    <!-- Statistics -->
-    <section class="stats" id="shops">
+    <!-- ================= STATISTICS SECTION ================= -->
+
+    <section class="stats-section">
 
         <div class="stat-card">
             <h2 id="shopCount">6</h2>
@@ -95,37 +132,56 @@
     </section>
 
 
-    <!-- Food Shops -->
-    <section class="section" id="shopSection">
+    <!-- ================= FOOD SHOPS SECTION ================= -->
+
+    <section class="section" id="shops">
 
         <div class="section-heading">
-            <p class="tagline">EXPLORE THE CAMPUS</p>
+
+            <span class="tagline">EXPLORE YOUR CAMPUS</span>
+
             <h2>Discover Food Shops</h2>
-            <p>Find your favourite food outlets at UPES.</p>
+
+            <p>
+                Explore the food outlets available across UPES.
+            </p>
+
         </div>
 
-        <div class="shop-container" id="shopContainer">
-            <p>Loading food shops...</p>
+        <div id="shopContainer" class="shop-container">
+
+            <p class="loading-message">Loading food shops...</p>
+
         </div>
 
     </section>
 
 
-    <!-- Menu Section -->
+    <!-- ================= MENU SECTION ================= -->
+
     <section class="section menu-section" id="menu">
 
         <div class="section-heading">
-            <p class="tagline">FIND YOUR FAVOURITE</p>
+
+            <span class="tagline">FIND YOUR FAVOURITE</span>
+
             <h2>Explore the Menu</h2>
-            <p>Search dishes and discover prices across campus.</p>
+
+            <p>
+                Search dishes, compare prices and discover something delicious.
+            </p>
+
         </div>
 
-        <div class="filters">
+
+        <!-- Search and Filters -->
+
+        <div class="filter-container">
 
             <input
                 type="text"
                 id="searchInput"
-                placeholder="Search for a dish..."
+                placeholder="🔍 Search for a food item..."
             >
 
             <select id="categoryFilter">
@@ -146,71 +202,231 @@
             <input
                 type="number"
                 id="priceFilter"
-                placeholder="Maximum price (₹)"
+                placeholder="Maximum price ₹"
                 min="0"
             >
 
-            <button id="searchButton">Search</button>
+            <button id="searchButton" class="primary-button">
+                Search
+            </button>
 
-        </div>
-
-        <div class="food-container" id="foodContainer">
-            <p>Loading menu...</p>
-        </div>
-
-    </section>
-
-
-    <!-- Recommendations -->
-    <section class="section recommendation-section" id="recommendations">
-
-        <div class="section-heading">
-            <p class="tagline">SMART FOOD DISCOVERY</p>
-            <h2>Find Food Within Your Budget</h2>
-            <p>Tell us your budget and discover affordable dishes.</p>
-        </div>
-
-        <div class="recommendation-form">
-
-            <input
-                type="number"
-                id="budgetInput"
-                placeholder="Enter your budget (₹)"
-                min="1"
-            >
-
-            <select id="recommendCategory">
-                <option value="">Any Category</option>
-                <option value="Beverages">Beverages</option>
-                <option value="Desserts">Desserts</option>
-                <option value="South Indian">South Indian</option>
-                <option value="Main Course">Main Course</option>
-                <option value="Fast Food">Fast Food</option>
-                <option value="Snacks">Snacks</option>
-                <option value="Soups">Soups</option>
-            </select>
-
-            <button id="recommendButton">
-                Find Recommendations
+            <button id="resetButton" class="reset-button">
+                Reset
             </button>
 
         </div>
 
-        <div class="food-container" id="recommendationContainer">
+
+        <!-- Food Items -->
+
+        <div id="foodContainer" class="food-container">
+
+            <p class="loading-message">Loading menu items...</p>
+
         </div>
 
     </section>
 
 
-    <!-- Footer -->
-    <footer>
-        <h2>CampusBites</h2>
+    <!-- ================= FOOD ITEM REVIEWS MODAL ================= -->
+
+    <div id="reviewsModal" class="modal">
+
+        <div class="modal-content">
+
+            <button id="closeReviews" class="close-button" type="button">
+                ×
+            </button>
+
+            <h2 id="modalFoodName">Food Item</h2>
+
+            <p id="modalRating"></p>
+
+            <div id="reviewsList"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= RECOMMENDATIONS SECTION ================= -->
+
+    <section class="section recommendation-section" id="recommendations">
+
+        <div class="section-heading">
+
+            <span class="tagline">SMART FOOD DISCOVERY</span>
+
+            <h2>What's Your Food Budget?</h2>
+
+            <p>
+                Tell us your budget and preferences.
+                We'll find food that fits your pocket.
+            </p>
+
+        </div>
+
+
+        <div class="recommendation-box">
+
+            <div class="recommendation-icon">💰</div>
+
+            <h3>Find Your Perfect Meal</h3>
+
+            <p>How much are you planning to spend?</p>
+
+            <div class="recommendation-form">
+
+                <input
+                    type="number"
+                    id="budgetInput"
+                    placeholder="Enter your budget (₹)"
+                    min="1"
+                >
+
+                <select id="recommendCategory">
+                    <option value="">Any Category</option>
+                    <option value="Beverages">Beverages</option>
+                    <option value="Desserts">Desserts</option>
+                    <option value="South Indian">South Indian</option>
+                    <option value="Main Course">Main Course</option>
+                    <option value="Fast Food">Fast Food</option>
+                    <option value="Snacks">Snacks</option>
+                    <option value="Soups">Soups</option>
+                </select>
+
+                <button
+                    id="recommendButton"
+                    class="primary-button"
+                    type="button"
+                >
+                    Find Recommendations →
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="recommendationContainer"
+            class="food-container"
+        ></div>
+
+    </section>
+
+
+    <!-- ================= REVIEWS SECTION ================= -->
+
+    <section class="section reviews-section" id="reviews">
+
+        <div class="section-heading">
+
+            <span class="tagline">STUDENT FEEDBACK</span>
+
+            <h2>Share Your Food Experience</h2>
+
+            <p>
+                Tried something delicious?
+                Share your experience with other students.
+            </p>
+
+        </div>
+
+        <div class="review-form-container">
+
+            <h3>Write a Review</h3>
+
+            <form id="reviewForm">
+
+                <label for="reviewItemId">
+                    Food Item ID
+                </label>
+
+                <input
+                    type="number"
+                    id="reviewItemId"
+                    placeholder="Enter food item ID"
+                    min="1"
+                    required
+                >
+
+                <label for="studentName">
+                    Your Name
+                </label>
+
+                <input
+                    type="text"
+                    id="studentName"
+                    placeholder="Enter your name"
+                    required
+                >
+
+                <label for="reviewRating">
+                    Your Rating
+                </label>
+
+                <select id="reviewRating" required>
+                    <option value="">Select rating</option>
+                    <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+                    <option value="4">⭐⭐⭐⭐ - Very Good</option>
+                    <option value="3">⭐⭐⭐ - Good</option>
+                    <option value="2">⭐⭐ - Average</option>
+                    <option value="1">⭐ - Poor</option>
+                </select>
+
+                <label for="reviewComment">
+                    Your Review
+                </label>
+
+                <textarea
+                    id="reviewComment"
+                    placeholder="Tell us about your experience..."
+                    rows="4"
+                    required
+                ></textarea>
+
+                <button type="submit" class="primary-button">
+                    Submit Review
+                </button>
+
+            </form>
+
+            <!-- Review submission confirmation or error -->
+            <p
+                id="reviewMessage"
+                class="form-message"
+                aria-live="polite"
+            ></p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <h2>Campus<span>Bites.</span></h2>
+
         <p>Discover. Compare. Eat.</p>
-        <p>Made for UPES students | 2026</p>
+
+        <p>
+            Made for UPES students.
+        </p>
+
+        <p class="copyright">
+            © 2026 CampusBites. All rights reserved.
+        </p>
+
     </footer>
 
+
+    <!-- JavaScript -->
 
     <script src="script.js"></script>
 
 </body>
+
 </html>

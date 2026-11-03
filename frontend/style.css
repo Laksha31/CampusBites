@@ -1,0 +1,1063 @@
+
+/* =========================================
+   CAMPUSBITES - GLOBAL STYLING
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background-color: #fffaf3;
+    color: #30251f;
+    line-height: 1.6;
+}
+
+:root {
+    --primary: #e87532;
+    --primary-dark: #c85c20;
+    --secondary: #33251e;
+    --background: #fffaf3;
+    --card: #ffffff;
+    --muted: #81766e;
+    --border: #eee2d6;
+    --light-orange: #fff0e3;
+}
+
+
+/* =========================================
+   NAVIGATION BAR
+========================================= */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 7%;
+    background-color: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 800;
+    color: var(--secondary);
+    text-decoration: none;
+    line-height: 1.1;
+}
+
+.logo span,
+.footer h2 span {
+    color: var(--primary);
+}
+
+.logo small {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--secondary);
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+.nav-button {
+    background-color: var(--primary);
+    color: white;
+    padding: 11px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.nav-button:hover {
+    background-color: var(--primary-dark);
+}
+
+
+/* =========================================
+   HERO SECTION
+========================================= */
+
+.hero {
+    min-height: 490px;
+    padding: 85px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 50px;
+    background: linear-gradient(120deg, #fff0df, #fffaf3);
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+.tagline {
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.hero h1 {
+    font-size: clamp(38px, 5vw, 62px);
+    line-height: 1.15;
+    margin: 20px 0;
+    color: var(--secondary);
+}
+
+.hero h1 span {
+    color: var(--primary);
+    display: block;
+}
+
+.hero-content > p {
+    color: var(--muted);
+    max-width: 520px;
+    font-size: 16px;
+    margin-bottom: 28px;
+}
+
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.primary-button {
+    background-color: var(--primary);
+    color: white;
+    padding: 13px 22px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.primary-button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.secondary-button {
+    background-color: white;
+    color: var(--secondary);
+    padding: 13px 22px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.3s;
+}
+
+.secondary-button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.hero-note {
+    margin-top: 30px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+
+/* =========================================
+   HERO VISUAL CARD
+========================================= */
+
+.hero-visual {
+    position: relative;
+    width: 350px;
+    min-width: 300px;
+    margin-right: 30px;
+}
+
+.hero-food-card {
+    background-color: var(--primary);
+    color: white;
+    padding: 40px 30px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(190, 91, 39, 0.2);
+}
+
+.food-emoji {
+    font-size: 105px;
+    margin-bottom: 15px;
+}
+
+.food-card-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    font-weight: 800;
+    opacity: 0.9;
+}
+
+.hero-food-card h2 {
+    font-size: 25px;
+    margin: 12px 0;
+    line-height: 1.3;
+}
+
+.hero-food-card p {
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+.floating-card {
+    position: absolute;
+    bottom: -30px;
+    left: -45px;
+    background: white;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.floating-card > span {
+    font-size: 28px;
+}
+
+.floating-card strong,
+.floating-card small {
+    display: block;
+}
+
+.floating-card strong {
+    font-size: 13px;
+}
+
+.floating-card small {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+
+/* =========================================
+   STATISTICS SECTION
+========================================= */
+
+.stats-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 45px 8%;
+    background-color: white;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 20px;
+    border-right: 1px solid var(--border);
+}
+
+.stat-card:last-child {
+    border-right: none;
+}
+
+.stat-card h2 {
+    font-size: 32px;
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.stat-card p {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+
+/* =========================================
+   GENERAL SECTION STYLING
+========================================= */
+
+.section {
+    padding: 75px 8%;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.section-heading h2 {
+    font-size: 35px;
+    color: var(--secondary);
+    margin: 10px 0;
+}
+
+.section-heading p {
+    font-size: 14px;
+    color: var(--muted);
+}
+
+
+/* =========================================
+   FOOD SHOP CARDS
+========================================= */
+
+.shop-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.shop-card {
+    background-color: white;
+    padding: 27px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    transition: 0.3s;
+}
+
+.shop-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    border-color: var(--primary);
+}
+
+.shop-icon {
+    width: 55px;
+    height: 55px;
+    background-color: var(--light-orange);
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-size: 27px;
+    margin-bottom: 18px;
+}
+
+.shop-card h3 {
+    color: var(--secondary);
+    margin-bottom: 6px;
+}
+
+.shop-card p {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+
+/* =========================================
+   MENU AND FILTER SECTION
+========================================= */
+
+.menu-section {
+    background-color: #fff3e8;
+}
+
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 35px;
+}
+
+.filter-container input,
+.filter-container select,
+.recommendation-form input,
+.recommendation-form select {
+    padding: 13px 15px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background-color: white;
+    font-size: 13px;
+    outline: none;
+    color: var(--secondary);
+}
+
+.filter-container input:focus,
+.filter-container select:focus,
+.recommendation-form input:focus,
+.recommendation-form select:focus {
+    border-color: var(--primary);
+}
+
+.filter-container input[type="text"] {
+    min-width: 220px;
+}
+
+.reset-button {
+    background-color: white;
+    border: 1px solid var(--border);
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--secondary);
+}
+
+.reset-button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+
+/* =========================================
+   FOOD ITEM CARDS
+========================================= */
+
+.food-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.food-card {
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 22px;
+    transition: 0.3s;
+}
+
+.food-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+}
+
+.food-card h3 {
+    font-size: 17px;
+    color: var(--secondary);
+    margin-bottom: 7px;
+}
+
+.food-card .category {
+    display: inline-block;
+    background-color: var(--light-orange);
+    color: var(--primary-dark);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.food-card .shop-name {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+
+.food-card .food-price {
+    color: var(--primary);
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.food-card .rating {
+    font-size: 12px;
+    color: #a77a1f;
+    margin-top: 8px;
+}
+
+
+/* =========================================
+   RECOMMENDATIONS SECTION
+========================================= */
+
+.recommendation-section {
+    background-color: white;
+}
+
+.recommendation-box {
+    max-width: 750px;
+    margin: auto;
+    padding: 35px;
+    background: linear-gradient(135deg, #fff0e3, #fff8ef);
+    border-radius: 18px;
+    text-align: center;
+}
+
+.recommendation-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+.recommendation-box h3 {
+    color: var(--secondary);
+    font-size: 24px;
+}
+
+.recommendation-box > p {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 10px 0 25px;
+}
+
+.recommendation-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.recommendation-form input,
+.recommendation-form select {
+    flex: 1;
+    min-width: 170px;
+}
+
+
+/* =========================================
+   REVIEWS SECTION
+========================================= */
+
+.reviews-section {
+    background-color: #fff3e8;
+}
+
+.review-form-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 30px;
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+}
+
+.review-form-container h3 {
+    margin-bottom: 20px;
+    color: var(--secondary);
+}
+
+#reviewForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#reviewForm label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+#reviewForm input,
+#reviewForm select,
+#reviewForm textarea {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+#reviewForm input:focus,
+#reviewForm select:focus,
+#reviewForm textarea:focus {
+    border-color: var(--primary);
+}
+
+#reviewForm button {
+    margin-top: 10px;
+}
+
+.form-message {
+    margin-top: 15px;
+    font-size: 13px;
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+    background-color: var(--secondary);
+    color: white;
+    text-align: center;
+    padding: 45px 20px;
+}
+
+.footer h2 {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+.footer p {
+    color: #d5c6ba;
+    font-size: 13px;
+    margin: 5px;
+}
+
+.footer .copyright {
+    margin-top: 20px;
+    font-size: 11px;
+    color: #a99b91;
+}
+
+
+/* =========================================
+   LOADING AND EMPTY MESSAGES
+========================================= */
+
+.loading-message,
+.empty-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--muted);
+    padding: 30px;
+    background: white;
+    border-radius: 10px;
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN - TABLETS
+========================================= */
+
+@media (max-width: 900px) {
+
+    .navbar {
+        padding: 18px 4%;
+    }
+
+    .nav-links {
+        gap: 13px;
+    }
+
+    .hero {
+        padding: 65px 5%;
+    }
+
+    .hero-visual {
+        margin-right: 0;
+    }
+
+    .shop-container,
+    .food-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section {
+        padding: 60px 5%;
+    }
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN - MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+    }
+
+    .nav-button {
+        font-size: 11px;
+        padding: 9px 12px;
+    }
+
+    .hero {
+        flex-direction: column;
+        padding: 55px 6%;
+        text-align: center;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .hero-visual {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    .floating-card {
+        left: -5px;
+    }
+
+    .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 30px 5%;
+        gap: 10px;
+    }
+
+    .stat-card {
+        border-right: none;
+        padding: 12px;
+    }
+
+    .stat-card h2 {
+        font-size: 25px;
+    }
+
+    .shop-container,
+    .food-container {
+        grid-template-columns: 1fr;
+    }
+
+    .section {
+        padding: 50px 6%;
+    }
+
+    .section-heading h2 {
+        font-size: 27px;
+    }
+
+    .filter-container {
+        flex-direction: column;
+    }
+
+    .filter-container input,
+    .filter-container select,
+    .filter-container button {
+        width: 100%;
+    }
+
+    .recommendation-form {
+        flex-direction: column;
+    }
+
+    .recommendation-form input,
+    .recommendation-form select,
+    .recommendation-form button {
+        width: 100%;
+    }
+
+    .recommendation-box,
+    .review-form-container {
+        padding: 22px;
+    }
+
+}
+
+
+/* Clickable food shop cards */
+
+.shop-card {
+    cursor: pointer;
+}
+
+.shop-explore {
+    display: inline-block;
+    margin-top: 15px;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.shop-card:hover .shop-explore {
+    text-decoration: underline;
+}
+
+
+/* =========================================
+   VIEW REVIEWS BUTTON
+========================================= */
+
+.view-reviews-button {
+    margin-top: 15px;
+    padding: 10px 14px;
+    background: var(--light-orange);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 7px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.view-reviews-button:hover {
+    background: var(--primary);
+    color: white;
+}
+
+
+/* =========================================
+   REVIEWS MODAL
+========================================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    width: 100%;
+    max-width: 520px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 30px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.modal-content h2 {
+    color: var(--secondary);
+    margin-bottom: 10px;
+}
+
+#modalRating {
+    color: var(--primary-dark);
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.close-button {
+    position: absolute;
+    top: 12px;
+    right: 18px;
+    border: none;
+    background: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--muted);
+}
+
+.review-card {
+    padding: 15px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    margin-top: 12px;
+}
+
+.review-card h4 {
+    color: var(--secondary);
+}
+
+.review-stars {
+    margin: 5px 0;
+}
+
+
+/* =========================================
+   SHOW MORE FOOD ITEMS
+========================================= */
+
+.show-more-container {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    margin: 25px 0 15px;
+}
+
+.show-more-button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 30px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.show-more-button:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+section {
+    scroll-margin-top: 90px;
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+========================================= */
+
+/* Tablets and smaller laptops */
+@media screen and (max-width: 900px) {
+
+    .navbar {
+        padding: 15px 25px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .hero {
+        padding: 50px 35px;
+        gap: 30px;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+    }
+
+    .shop-container,
+    .food-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .filter-container {
+        flex-wrap: wrap;
+    }
+
+}
+
+
+/* Mobile phones */
+@media screen and (max-width: 600px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .nav-links {
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .nav-links a {
+        font-size: 13px;
+    }
+
+    .nav-button {
+        display: none;
+    }
+
+    .hero {
+        flex-direction: column;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .hero-content,
+    .hero-visual {
+        width: 100%;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-visual {
+        margin-top: 20px;
+    }
+
+    .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 25px 10px;
+    }
+
+    .shop-container,
+    .food-container {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .filter-container input,
+    .filter-container select,
+    .filter-container button {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .recommendation-form {
+        flex-direction: column;
+    }
+
+    .recommendation-form input,
+    .recommendation-form select,
+    .recommendation-form button {
+        width: 100%;
+    }
+
+    .review-form-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .modal-content {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .section {
+        padding: 40px 18px;
+    }
+
+    .section-heading h2 {
+        font-size: 27px;
+    }
+
+}
