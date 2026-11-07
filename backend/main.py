@@ -173,4 +173,4 @@ def review_analytics(shop_id: int = None, days: int = Query(30, ge=7, le=90),
 # The website is also served by the backend: http://127.0.0.1:8000/app/
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 if FRONTEND_DIR.exists():
-    app.mount("/app", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
+    app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
