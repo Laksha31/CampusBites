@@ -4,7 +4,10 @@
 
 // If the site is opened from the backend (http://127.0.0.1:8000/app/) use the
 // same server, otherwise (file or Live Server) talk to the local backend.
-const API_URL = location.port === "8000" ? "" : "http://127.0.0.1:8000";
+const API_URL =
+    ["localhost", "127.0.0.1"].includes(location.hostname)
+        ? (location.port === "8000" ? "" : "http://127.0.0.1:8000")
+        : "";
 
 const SHOP_EMOJI = {
     "Annapurna": "🍛", "Appetite Rolls": "🌯", "Chai Garam": "☕",
