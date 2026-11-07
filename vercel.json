@@ -1,0 +1,58 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "frontend": {
+      "root": "frontend/"
+    },
+    "backend": {
+      "root": ".",
+      "framework": "fastapi",
+      "entrypoint": "backend.main:app",
+      "buildCommand": "python -m backend.import_data"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/shops",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/shops/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/items/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/meal-finder",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/reviews/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/analytics/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend"
+      }
+    }
+  ]
+}
