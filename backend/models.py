@@ -43,6 +43,8 @@ class Review(Base):
     rating = Column(Integer, nullable=False)
     comment = Column(Text)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    # True for sample reviews created by seed_reviews.py (so they can be cleared safely)
+    is_demo = Column(Boolean, default=False)
 
     food_item_id = Column(Integer, ForeignKey("food_items.id"))
 

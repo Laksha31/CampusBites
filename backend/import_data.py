@@ -2,14 +2,15 @@
 import pandas as pd
 from pathlib import Path
 
-from backend.database import SessionLocal
+from backend.database import SessionLocal, ensure_schema
 from backend.models import FoodShop, FoodItem
 
 # Locate the master CSV file
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 CSV_PATH = PROJECT_ROOT / "data" / "processed" / "campusbites_master.csv"
 
-# Create a database session
+# Make sure the tables exist, then create a database session
+ensure_schema()
 db = SessionLocal()
 
 try:
