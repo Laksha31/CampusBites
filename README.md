@@ -2,176 +2,117 @@
 
 **Discover. Compare. Eat.**
 
-CampusBites is a campus-focused food discovery platform designed to help students explore food outlets at UPES, discover available menu items, compare prices and find meals that fit their budgets.
+CampusBites helps UPES students explore food shops, browse their menus, find meals that fit a budget, and read (and write) honest reviews.
 
-The platform brings food information from different campus outlets into one place, making it easier for students to decide what to eat.
+The website has **two main sections**, plus student reviews with charts:
 
----
+1. **Food Shops** – open any shop to see its full menu with prices, ratings, **See Reviews** and **Review** buttons on every dish.
+2. **Find Meal in My Budget** – enter a budget and what you're craving; get complete meals (e.g. main + drink + dessert) ranked by price fit and student ratings.
+3. **Reviews** – **Give Review** form plus a live **Review Insights** dashboard built from student reviews.
 
-## ✨ Features
+## ✨ Pages
 
-- **Food Discovery:** Explore food outlets and browse their menus.
-- **Smart Search:** Search for dishes by name.
-- **Category Filtering:** Discover food by categories such as Beverages, Desserts, Fast Food, Main Course, Snacks and South Indian.
-- **Price Comparison:** Compare dish prices across different food outlets.
-- **Budget-Based Recommendations:** Find food items according to a specified budget and preferences.
-- **Ratings and Reviews:** Submit ratings, write reviews and view feedback from other users.
-- **Average Ratings:** View average dish ratings and the total number of reviews.
+| Page | What it does |
+|---|---|
+| `index.html` | Home: hero (Explore Food Shops / Find Meal in My Budget / **Give Review**), shop cards, quick budget box, review highlights |
+| `shop.html?id=…` | A shop's menu: search, category chips, sort, max price, **See Reviews** / **Review** on each dish |
+| `meal.html` | Meal finder: budget, cravings (meal / snack / drink / dessert), shop, one-shop toggle, sort |
+| `reviews.html` | **Give Review** form + Review Insights charts + latest reviews |
+
+## 📊 Review visualizations
+
+Built from real student reviews (plain SVG/CSS, no external libraries):
+
+- Rating breakdown (5★ to 1★) and a "student mood" donut
+- Shop leaderboard and food-category ratings
+- Reviews per day with the average-rating trend
+- Price vs. rating scatter ("does paying more get you better food?")
+- Top rated, most reviewed and needs-improvement dishes
+- Filter the whole dashboard by shop
+
+## 💡 How the meal finder works
+
+- **Courses:** Meal = Main Course / Fast Food / South Indian, Snack = Snacks / Soups, Drink = Beverages, Dessert = Desserts.
+- It builds combinations with **one dish per chosen course** whose total is within the budget. Turn off "Get everything from one shop" to mix shops.
+- **Best match** blends how well the meal uses your budget (35%) with student ratings (65%). **Highest rated** and **Cheapest first** are also available.
+- Ratings use a weighted average, so one 5★ review doesn't beat a dish with many 4.5★ reviews. Unrated dishes count as 3.5.
+- If nothing fits, it tells you the cheapest possible meal and how much more you need.
+- With no craving selected it simply lists single dishes within your budget.
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| Python | Backend development and data processing |
-| Pandas | Data cleaning and analysis |
-| NumPy | Numerical operations |
-| Matplotlib / Seaborn | Data visualization |
-| FastAPI | REST API development |
-| SQLite | Database management |
-| SQLAlchemy | Object-relational mapping |
-| HTML | Frontend structure |
-| CSS | Frontend styling |
-| JavaScript | Frontend interactivity |
+Python · FastAPI · SQLAlchemy · SQLite · Pandas (data cleaning) · HTML / CSS / JavaScript
 
 ## 📊 Dataset
 
-The platform uses a consolidated menu dataset containing information from six UPES food outlets.
-
-- **Food outlets:** 6
-- **Menu items:** 363
-- **Attributes:** Shop Name, Item Name, Category and Price
-
-The dataset is used for menu exploration, price analysis, category-based filtering and budget recommendations.
+363 menu items from 6 UPES outlets (Annapurna, Appetite Rolls, Chai Garam, Food Court, Frisco, Tulips), with Shop Name, Item, Category and Price.
 
 ## 🏗️ Project Structure
 
 ```text
-Campus-Bites/
-│
+CampusBites/
 ├── backend/
-│   ├── main.py
-│   ├── database.py
-│   ├── models.py
-│   ├── import_data.py
+│   ├── main.py            API routes
+│   ├── services.py        shop stats, meal finder, review analytics
+│   ├── models.py          database tables
+│   ├── database.py        connection + automatic schema update
+│   ├── import_data.py     loads the menu CSV into SQLite
+│   ├── seed_reviews.py    optional demo reviews for the charts
 │   └── requirements.txt
-│
-├── data/
-│   ├── raw/
-│   └── processed/
-│       └── campusbites_master.csv
-│
+├── data/ (raw + processed)
 ├── notebooks/
-│   ├── 01_data_inspection.ipynb
-│   ├── 02_exploratory_data_analysis.ipynb
-│   └── 03_advanced_data_analysis.ipynb
-│
-├── frontend/
-│   ├── index.html
-│   ├── style.css
-│   └── script.js
-│
-├── docs/
-│
-├── .gitignore
-├── README.md
-└── requirements.txt
+└── frontend/
+    ├── index.html  shop.html  meal.html  reviews.html
+    ├── style.css   script.js (shared)  charts.js
 ```
 
-## ⚙️ Installation and Setup
-
-### 1. Clone the repository
-
-```bash
-git clone <your-github-repository-url>
-cd "Campus Bites"
-```
-
-### 2. Create a virtual environment
+## ⚙️ Setup
 
 ```bash
 python -m venv .venv
-```
-
-Activate it on Windows:
-
-```bash
-.venv\Scripts\activate
-```
-
-### 3. Install dependencies
-
-```bash
+.venv\Scripts\activate            # Windows
 pip install -r backend/requirements.txt
-```
 
-### 4. Initialize the database and import menu data
-
-From the project root directory, run:
-
-```bash
-python -m backend.import_data
-```
-
-This creates the SQLite database tables and imports the menu data.
-
-### 5. Start the FastAPI server
-
-```bash
+python -m backend.import_data     # first time only: loads the menu
 python -m uvicorn backend.main:app --reload
 ```
 
-The backend will be available at:
+Open the website at **http://127.0.0.1:8000/app/** (API docs: `/docs`).
+You can also open `frontend/index.html` with Live Server; it talks to the backend on port 8000.
 
-```text
-http://127.0.0.1:8000
+Your existing `campusbites.db` keeps working. A new column is added automatically on startup and no data is lost.
+
+### Demo reviews (optional)
+
+The review charts need reviews to show anything. To fill them with ~350 sample reviews:
+
+```bash
+python -m backend.seed_reviews            # add demo reviews
+python -m backend.seed_reviews --clear    # remove ONLY the demo reviews
 ```
 
-### 6. Explore the API documentation
-
-Open:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
-FastAPI provides interactive API documentation through Swagger UI.
+Real reviews written on the website are never removed by `--clear`.
 
 ## 🔗 API Endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/` | Welcome message |
-| GET | `/health` | API health check |
-| GET | `/shops` | Retrieve food outlets |
-| GET | `/items` | Retrieve menu items and ratings |
-| GET | `/items/search` | Search and filter food items |
-| GET | `/recommendations` | Get budget-based recommendations |
-| POST | `/items/{item_id}/reviews` | Submit a food review |
-| GET | `/items/{item_id}/reviews` | Retrieve food reviews |
-
-## 💡 Recommendation Logic
-
-CampusBites provides budget-based food recommendations by considering:
-
-- Maximum price specified by the student.
-- Preferred food category.
-- Preferred food outlet.
-- Availability of food items.
-
-Matching food items are displayed in ascending order of price, helping students discover affordable options.
+| GET | `/shops` | Shops with item count, price range, categories, rating |
+| GET | `/shops/{id}` | One shop's details |
+| GET | `/items/search` | Dishes with ratings: `name, category, shop, shop_id, max_price, sort` |
+| GET | `/meal-finder` | Budget meals: `budget, courses, shop, same_shop, sort, limit` |
+| GET | `/items/{id}/reviews` | Reviews, average and rating breakdown for a dish |
+| POST | `/items/{id}/reviews` | Submit a review |
+| GET | `/reviews/recent` | Latest reviews (optional `shop_id`) |
+| GET | `/analytics/reviews` | All data for the review charts (optional `shop_id`) |
+| GET | `/items`, `/recommendations` | Earlier endpoints, kept for compatibility |
 
 ## 🔮 Future Enhancements
 
-- Student authentication and profile management.
-- Verified student reviews and ratings.
-- Personalized food recommendations.
-- Food popularity analytics using real user feedback.
-- Advanced price comparison and interactive dashboards.
-- Deployment for campus-wide accessibility.
-
-## 🎯 Project Objective
-
-CampusBites aims to simplify food discovery within the UPES campus by bringing menu information, pricing, reviews and budget-based recommendations together in a single platform.
+- Student login and verified reviews
+- Veg / non-veg and spice filters (needs the menu data to include them)
+- Photos with reviews
+- Deployment for campus-wide access
 
 ---
 

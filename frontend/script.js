@@ -1,707 +1,287 @@
-
 // ==========================================
-// CAMPUSBITES - JAVASCRIPT
-// ==========================================
-
-// FastAPI backend URL
-const API_URL = "http://127.0.0.1:8000";
-
-
-// ==========================================
-// 1. LOAD FOOD SHOPS
+// CAMPUSBITES - SHARED JAVASCRIPT (all pages)
 // ==========================================
 
-async function loadShops() {
-
-    const shopContainer = document.getElementById("shopContainer");
-    const shopFilter = document.getElementById("shopFilter");
-
-    try {
-
-        const response = await fetch(`${API_URL}/shops`);
-
-        if (!response.ok) {
-            throw new Error("Unable to load food shops");
-        }
-
-        const shops = await response.json();
-
-        shopContainer.innerHTML = "";
-        shopFilter.innerHTML = '<option value="">All Shops</option>';
-
-        document.getElementById("shopCount").textContent = shops.length;
-
-        shops.forEach(shop => {
-
-            // Create clickable shop card
-            const card = document.createElement("div");
-            card.className = "shop-card";
-
-            card.innerHTML = `
-                <div class="shop-icon">🍽️</div>
-                <h3>${escapeHTML(shop.name)}</h3>
-                <p>${shop.total_items} menu items available</p>
-                <span class="shop-explore">Explore Menu →</span>
-            `;
-
-            card.addEventListener("click", () => {
-
-                document.getElementById("shopFilter").value = shop.name;
-
-                document.getElementById("searchInput").value = "";
-                document.getElementById("categoryFilter").value = "";
-                document.getElementById("priceFilter").value = "";
-
-                searchItems();
-
-                document.getElementById("menu").scrollIntoView({
-                    behavior: "smooth"
-                });
-
-            });
-
-            shopContainer.appendChild(card);
-
-            // Add shop to filter dropdown
-            const option = document.createElement("option");
-
-            option.value = shop.name;
-            option.textContent = shop.name;
-
-            shopFilter.appendChild(option);
-
-        });
-
-    } catch (error) {
-
-        console.error("Shop loading error:", error);
-
-        shopContainer.innerHTML =
-            '<p class="empty-message">Unable to load food shops. Please check the backend server.</p>';
-
-    }
-
-}
-
-
-// ==========================================
-// 2. LOAD ALL FOOD ITEMS
-// ==========================================
-
-async function loadItems() {
-
-    try {
-
-        const response = await fetch(`${API_URL}/items`);
-
-        if (!response.ok) {
-            throw new Error("Unable to load menu items");
-        }
-
-        const items = await response.json();
-
-        document.getElementById("itemCount").textContent = items.length;
-
-        displayItems(items);
-
-    } catch (error) {
-
-        console.error("Menu loading error:", error);
-
-        document.getElementById("foodContainer").innerHTML =
-            '<p class="empty-message">Unable to load menu. Please check your connection.</p>';
-
-    }
-
-}
-
-
-// ==========================================
-// 3. DISPLAY FOOD ITEMS
-// ==========================================
-
-
-const ITEMS_PER_PAGE = 6;
-
-// Track how many items are currently displayed
-const displayedCounts = {};
-
-function displayItems(items, containerId = "foodContainer") {
-
-    const container = document.getElementById(containerId);
-
-    container.innerHTML = "";
-
-    // Start with 6 items whenever new results are loaded
-    displayedCounts[containerId] = ITEMS_PER_PAGE;
-
-    if (!items || items.length === 0) {
-
-        container.innerHTML =
-            '<p class="empty-message">No food items found. Try different filters.</p>';
-
-        return;
-
-    }
-
-    // Function to render the visible items
-    function renderItems() {
-
-        container.innerHTML = "";
-
-        const visibleCount = displayedCounts[containerId];
-
-        const visibleItems = items.slice(0, visibleCount);
-
-        visibleItems.forEach(item => {
-
-            const card = document.createElement("div");
-            card.className = "food-card";
-
-            const ratingText = item.average_rating != null
-                ? `⭐ ${item.average_rating} / 5 (${item.total_reviews ?? 0} reviews)`
-                : "☆ No ratings yet";
-
-            card.innerHTML = `
-                <span class="category">
-                    ${escapeHTML(item.category || "Other")}
-                </span>
-
-                <h3>${escapeHTML(item.name)}</h3>
-
-                <p class="shop-name">
-                    📍 ${escapeHTML(item.shop_name)}
-                </p>
-
-                <p class="food-price">
-                    ₹${Number(item.price).toFixed(2)}
-                </p>
-
-                <p class="rating">
-                    ${ratingText}
-                </p>
-
-                <p class="item-id">
-                    Item ID: ${item.id}
-                </p>
-            `;
-
-            // View reviews button
-            const reviewButton = document.createElement("button");
-
-            reviewButton.className = "view-reviews-button";
-            reviewButton.textContent = "View Reviews →";
-            reviewButton.type = "button";
-
-            reviewButton.addEventListener("click", () => {
-                showReviews(item.id, item.name);
-            });
-
-            card.appendChild(reviewButton);
-
-            container.appendChild(card);
-
-        });
-
-        // Show More button
-        if (visibleCount < items.length) {
-
-            const buttonContainer = document.createElement("div");
-
-            buttonContainer.className = "show-more-container";
-
-            const showMoreButton = document.createElement("button");
-
-            showMoreButton.className = "show-more-button";
-            showMoreButton.type = "button";
-            showMoreButton.textContent = "Show More Items ↓";
-
-            showMoreButton.addEventListener("click", () => {
-
-                displayedCounts[containerId] += ITEMS_PER_PAGE;
-
-                renderItems();
-
-            });
-
-            buttonContainer.appendChild(showMoreButton);
-
-            container.appendChild(buttonContainer);
-
-        }
-
-    }
-
-    // Initial display
-    renderItems();
-
-}
-
-
-
-// ==========================================
-// 4. SEARCH AND FILTER FOOD ITEMS
-// ==========================================
-
-async function searchItems() {
-
-    const name = document.getElementById("searchInput").value.trim();
-
-    const category = document.getElementById("categoryFilter").value;
-
-    const shop = document.getElementById("shopFilter").value;
-
-    const maxPrice = document.getElementById("priceFilter").value;
-
-    const params = new URLSearchParams();
-
-    if (name) {
-        params.append("name", name);
-    }
-
-    if (category) {
-        params.append("category", category);
-    }
-
-    if (shop) {
-        params.append("shop", shop);
-    }
-
-    if (maxPrice !== "") {
-
-        if (Number(maxPrice) < 0) {
-            alert("Please enter a valid maximum price.");
-            return;
-        }
-
-        params.append("max_price", maxPrice);
-
-    }
-
-    const container = document.getElementById("foodContainer");
-
-    container.innerHTML =
-        '<p class="loading-message">Searching food items...</p>';
-
-    try {
-
-        const response = await fetch(
-            `${API_URL}/items/search?${params.toString()}`
-        );
-
-        if (!response.ok) {
-            throw new Error("Search request failed");
-        }
-
-        const items = await response.json();
-
-        displayItems(items);
-
-    } catch (error) {
-
-        console.error("Search error:", error);
-
-        container.innerHTML =
-            '<p class="empty-message">Unable to search right now. Please try again.</p>';
-
-    }
-
-}
-
-
-// ==========================================
-// 5. RESET SEARCH FILTERS
-// ==========================================
-
-function resetFilters() {
-
-    document.getElementById("searchInput").value = "";
-
-    document.getElementById("categoryFilter").value = "";
-
-    document.getElementById("shopFilter").value = "";
-
-    document.getElementById("priceFilter").value = "";
-
-    loadItems();
-
-}
-
-
-// ==========================================
-// 6. BUDGET-BASED RECOMMENDATIONS
-// ==========================================
-
-async function getRecommendations() {
-
-    const budget = document.getElementById("budgetInput").value;
-
-    const category = document.getElementById("recommendCategory").value;
-
-    const container =
-        document.getElementById("recommendationContainer");
-
-    if (!budget || Number(budget) <= 0) {
-
-        alert("Please enter a valid budget.");
-
-        return;
-
-    }
-
-    const params = new URLSearchParams();
-
-    params.append("budget", budget);
-
-    if (category) {
-        params.append("category", category);
-    }
-
-    container.innerHTML =
-        '<p class="loading-message">Finding food recommendations...</p>';
-
-    try {
-
-        const response = await fetch(
-            `${API_URL}/recommendations?${params.toString()}`
-        );
-
-        if (!response.ok) {
-            throw new Error("Recommendation request failed");
-        }
-
-        const data = await response.json();
-
-        if (!data.recommendations || data.recommendations.length === 0) {
-
-            container.innerHTML =
-                '<p class="empty-message">No dishes found within this budget. Try increasing your budget.</p>';
-
-            return;
-
-        }
-
-        // Display recommendations first
-        displayItems(
-            data.recommendations.map(item => ({
-                ...item,
-                average_rating: null,
-                total_reviews: 0
-            })),
-            "recommendationContainer"
-        );
-
-        // Add heading without clearing the food cards
-        const heading = document.createElement("div");
-
-        heading.className = "recommendation-result-heading";
-
-        heading.innerHTML = `
-            <h3>${data.total_recommendations} recommendations found</h3>
-            <p>Food items within your budget of ₹${Number(data.budget).toFixed(2)}</p>
-        `;
-
-        container.prepend(heading);
-
-    } catch (error) {
-
-        console.error("Recommendation error:", error);
-
-        container.innerHTML =
-            '<p class="empty-message">Unable to fetch recommendations. Please try again.</p>';
-
-    }
-
-}
-
-
-// ==========================================
-// 7. SUBMIT STUDENT REVIEWS
-// ==========================================
-
-async function submitReview(event) {
-
-    // Prevent normal HTML form submission and page navigation
-    event.preventDefault();
-    event.stopPropagation();
-
-    const itemId = document.getElementById("reviewItemId").value;
-
-    const studentName =
-        document.getElementById("studentName").value.trim();
-
-    const rating =
-        Number(document.getElementById("reviewRating").value);
-
-    const comment =
-        document.getElementById("reviewComment").value.trim();
-
-    const message = document.getElementById("reviewMessage");
-
-    const form = document.getElementById("reviewForm");
-
-    const submitButton = form.querySelector('button[type="submit"]');
-
-    // Basic validation
-    if (!itemId || !studentName || !rating || !comment) {
-
-        message.textContent = "Please fill in all review fields.";
-        message.style.color = "red";
-
-        message.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
-
-        return;
-
-    }
-
-    const reviewData = {
-        student_name: studentName,
-        rating: rating,
-        comment: comment
-    };
-
-    message.textContent = "Submitting your review...";
-    message.style.color = "#81766e";
-
-    // Prevent repeated clicks during submission
-    submitButton.disabled = true;
-    submitButton.textContent = "Submitting...";
-
-    try {
-
-        const response = await fetch(
-            `${API_URL}/items/${itemId}/reviews`,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify(reviewData)
-            }
-        );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(
-                data.detail || data.error || "Review submission failed"
-            );
-        }
-
-        if (data.error) {
-            throw new Error(data.error);
-        }
-
-        // Show success message
-        message.textContent =
-            "Your review was submitted successfully! Thank you.";
-
-        message.style.color = "green";
-
-        // Clear the form
-        form.reset();
-
-        // Bring the confirmation message into view
-        message.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
-
-        // Refresh menu ratings
-        await loadItems();
-
-    } catch (error) {
-
-        console.error("Review submission error:", error);
-
-        message.textContent = error.message;
-
-        message.style.color = "red";
-
-        message.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
-
-    } finally {
-
-        // Re-enable submit button
-        submitButton.disabled = false;
-        submitButton.textContent = "Submit Review";
-
-    }
-
-}
-
-
-// ==========================================
-// 8. HTML TEXT SAFETY
-// ==========================================
+// If the site is opened from the backend (http://127.0.0.1:8000/app/) use the
+// same server, otherwise (file or Live Server) talk to the local backend.
+const API_URL =
+    ["localhost", "127.0.0.1"].includes(location.hostname)
+        ? (location.port === "8000" ? "" : "http://127.0.0.1:8000")
+        : "";
+
+const SHOP_EMOJI = {
+    "Annapurna": "🍛", "Appetite Rolls": "🌯", "Chai Garam": "☕",
+    "Food Court": "🍽️", "Frisco": "🍦", "Tulips": "🍰"
+};
+const COURSE_EMOJI = { meal: "🍛", snack: "🥨", drink: "🥤", dessert: "🍰" };
+const RATING_WORDS = ["", "Poor", "Average", "Good", "Very good", "Excellent"];
+
+
+// ---------- Small helpers ----------
+
+const $ = (selector, root = document) => root.querySelector(selector);
 
 function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, c => (
+        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]
+    ));
+}
 
-    return String(value ?? "").replace(/[&<>"']/g, character => {
+const money = n => "₹" + (Number.isInteger(+n) ? +n : (+n).toFixed(2));
+const shopEmoji = name => SHOP_EMOJI[name] || "🍴";
 
-        const characters = {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#039;"
-        };
+async function api(path, options) {
+    let response;
+    try {
+        response = await fetch(API_URL + path, options);
+    } catch (e) {
+        throw new Error("Cannot reach the server. Is the backend running?");
+    }
+    let data = null;
+    try { data = await response.json(); } catch (e) { /* no body */ }
 
-        return characters[character];
+    if (!response.ok) {
+        const d = data && data.detail;
+        throw new Error(
+            typeof d === "string" ? d : (Array.isArray(d) && d[0]?.msg) || "Something went wrong."
+        );
+    }
+    return data;
+}
 
-    });
+function starsHTML(value) {
+    const full = Math.round(value || 0);
+    return `<span class="stars" aria-label="${full} out of 5">${"★".repeat(full)}<span class="off">${"★".repeat(5 - full)}</span></span>`;
+}
 
+function ratingPill(avg, count) {
+    if (avg == null) return '<span class="rating-pill none">No reviews yet</span>';
+    return `<span class="rating-pill">★ ${Number(avg).toFixed(1)} <small>(${count})</small></span>`;
+}
+
+function timeAgo(iso) {
+    if (!iso) return "";
+    const d = new Date(/[zZ]|[+-]\d\d:?\d\d$/.test(iso) ? iso : iso + "Z");
+    const days = Math.floor((Date.now() - d) / 86400000);
+    if (days <= 0) return "today";
+    if (days === 1) return "yesterday";
+    if (days < 30) return `${days} days ago`;
+    return d.toLocaleDateString();
+}
+
+function toast(message) {
+    const t = $("#toast");
+    t.textContent = message;
+    t.classList.add("show");
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => t.classList.remove("show"), 2800);
 }
 
 
-// ==========================================
-// 9. VIEW FOOD ITEM REVIEWS
-// ==========================================
+// ---------- Page chrome: navigation, footer, popup ----------
 
-async function showReviews(itemId, itemName) {
+function renderChrome() {
+    const page = document.body.dataset.page;
+    const link = (href, key, text) =>
+        `<a href="${href}" class="${page === key ? "active" : ""}">${text}</a>`;
 
-    const modal = document.getElementById("reviewsModal");
+    document.body.insertAdjacentHTML("afterbegin", `
+        <header class="navbar">
+            <a href="index.html" class="logo">Campus<span>Bites.</span><small>UPES FOOD DISCOVERY</small></a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+            <nav class="nav-links" id="navLinks">
+                ${link("index.html", "home", "Home")}
+                ${link("index.html#shops", "shop", "Food Shops")}
+                ${link("meal.html", "meal", "Find Meal")}
+                ${link("reviews.html", "reviews", "Reviews")}
+            </nav>
+            <a href="reviews.html#give" class="nav-button">Give Review ★</a>
+        </header>`);
 
-    const reviewsList = document.getElementById("reviewsList");
+    document.body.insertAdjacentHTML("beforeend", `
+        <footer class="footer">
+            <h2>Campus<span>Bites.</span></h2>
+            <p>Discover. Compare. Eat.</p>
+            <p>Made for UPES students.</p>
+        </footer>
+        <div id="modal" class="modal" role="dialog" aria-modal="true">
+            <div class="modal-content">
+                <button class="close-button" type="button" aria-label="Close">×</button>
+                <div id="modalBody"></div>
+            </div>
+        </div>
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>`);
 
-    const modalFoodName = document.getElementById("modalFoodName");
+    $("#menuToggle").addEventListener("click", () => $("#navLinks").classList.toggle("open"));
+    $("#modal .close-button").addEventListener("click", closeModal);
+    $("#modal").addEventListener("click", e => { if (e.target.id === "modal") closeModal(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+}
 
-    const modalRating = document.getElementById("modalRating");
+function openModal(html) {
+    $("#modalBody").innerHTML = html;
+    $("#modal").classList.add("open");
+    return $("#modalBody");
+}
 
-    modal.style.display = "flex";
+function closeModal() {
+    $("#modal").classList.remove("open");
+}
 
-    modalFoodName.textContent = itemName;
 
-    modalRating.textContent = "Loading ratings...";
+// ---------- SEE REVIEWS popup ----------
 
-    reviewsList.innerHTML = '<p>Loading reviews...</p>';
+function distributionHTML(distribution, total) {
+    return [5, 4, 3, 2, 1].map(n => {
+        const count = distribution[n] || 0;
+        const pct = total ? (count / total) * 100 : 0;
+        return `<div class="hbar"><span class="lbl">${n} ★</span>
+            <span class="track"><span class="fill" style="width:${pct}%"></span></span>
+            <span class="val">${count}</span></div>`;
+    }).join("");
+}
+
+async function openReviews(item) {
+    const body = openModal(`<h2>${escapeHTML(item.name)}</h2><p class="loading-message">Loading reviews...</p>`);
 
     try {
+        const data = await api(`/items/${item.id}/reviews`);
 
-        const response = await fetch(
-            `${API_URL}/items/${itemId}/reviews`
-        );
+        const list = data.reviews.length
+            ? data.reviews.map(r => `
+                <div class="review-card">
+                    <div class="top"><strong>${escapeHTML(r.student_name)}</strong>${starsHTML(r.rating)}</div>
+                    <p>${escapeHTML(r.comment || "")}</p>
+                    <small>${timeAgo(r.created_at)}</small>
+                </div>`).join("")
+            : '<div class="empty-box">No reviews yet. Be the first to review this dish!</div>';
 
-        if (!response.ok) {
-            throw new Error("Unable to fetch reviews");
-        }
+        body.innerHTML = `
+            <h2>${escapeHTML(data.food_item)}</h2>
+            <p class="muted">${escapeHTML(data.shop_name)} · ${money(data.price)}</p>
+            ${data.total_reviews ? `
+            <div class="review-summary">
+                <div><div class="score">${data.average_rating.toFixed(1)}</div>
+                    ${starsHTML(data.average_rating)}<div class="muted" style="font-size:13px">${data.total_reviews} review${data.total_reviews > 1 ? "s" : ""}</div></div>
+                <div class="dist">${distributionHTML(data.distribution, data.total_reviews)}</div>
+            </div>` : ""}
+            <button class="primary-button" id="writeFromList" type="button">Write a review</button>
+            <div class="review-list">${list}</div>`;
 
-        const data = await response.json();
-
-        modalRating.textContent =
-            `⭐ ${data.average_rating ?? "No ratings yet"} / 5 · ${data.total_reviews} reviews`;
-
-        reviewsList.innerHTML = "";
-
-        if (!data.reviews || data.reviews.length === 0) {
-
-            reviewsList.innerHTML =
-                '<p class="empty-message">No reviews yet. Be the first to review this dish!</p>';
-
-            return;
-
-        }
-
-        data.reviews.forEach(review => {
-
-            const reviewCard = document.createElement("div");
-
-            reviewCard.className = "review-card";
-
-            reviewCard.innerHTML = `
-                <h4>${escapeHTML(review.student_name)}</h4>
-                <p class="review-stars">${"⭐".repeat(review.rating)}</p>
-                <p>${escapeHTML(review.comment || "No comment provided.")}</p>
-            `;
-
-            reviewsList.appendChild(reviewCard);
-
-        });
+        $("#writeFromList").addEventListener("click", () => openReviewForm(item));
 
     } catch (error) {
-
-        console.error("Review loading error:", error);
-
-        reviewsList.innerHTML =
-            '<p class="empty-message">Unable to load reviews. Please try again.</p>';
-
-        modalRating.textContent = "";
-
+        body.innerHTML = `<h2>${escapeHTML(item.name)}</h2><p class="empty-message">${escapeHTML(error.message)}</p>`;
     }
-
 }
 
 
-// ==========================================
-// 10. CLOSE REVIEWS MODAL
-// ==========================================
+// ---------- WRITE A REVIEW popup ----------
 
-function closeReviewsModal() {
+// Star picker used in the popup and on the Reviews page
+function mountStarPicker(container, onChange) {
+    container.innerHTML = `<div class="star-picker">${[1, 2, 3, 4, 5].map(n =>
+        `<button type="button" data-v="${n}" aria-label="${n} star${n > 1 ? "s" : ""}">★</button>`).join("")}
+        <span class="star-label">Tap to rate</span></div>`;
+    const buttons = container.querySelectorAll("button");
+    const label = container.querySelector(".star-label");
+    const picker = { value: 0 };
 
-    document.getElementById("reviewsModal").style.display = "none";
+    buttons.forEach(b => b.addEventListener("click", () => {
+        picker.value = +b.dataset.v;
+        buttons.forEach(x => x.classList.toggle("on", +x.dataset.v <= picker.value));
+        label.textContent = RATING_WORDS[picker.value];
+        if (onChange) onChange(picker.value);
+    }));
+    picker.reset = () => {
+        picker.value = 0;
+        buttons.forEach(x => x.classList.remove("on"));
+        label.textContent = "Tap to rate";
+    };
+    return picker;
+}
 
+// Sends a review to the backend. Shared by the popup and the Reviews page.
+async function sendReview(itemId, name, rating, comment) {
+    const result = await api(`/items/${itemId}/reviews`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ student_name: name, rating, comment })
+    });
+    try { localStorage.setItem("cb_name", name); } catch (e) { /* ignore */ }
+    document.dispatchEvent(new CustomEvent("review-added", { detail: { itemId } }));
+    return result;
+}
+
+function savedName() {
+    try { return localStorage.getItem("cb_name") || ""; } catch (e) { return ""; }
+}
+
+function openReviewForm(item) {
+    const body = openModal(`
+        <h2>Review: ${escapeHTML(item.name)}</h2>
+        <p class="muted">${escapeHTML(item.shop_name || "")}</p>
+        <form id="popupForm" novalidate>
+            <label class="field">Your rating</label>
+            <div id="popupStars"></div>
+            <label class="field" for="popupName">Your name</label>
+            <input type="text" id="popupName" maxlength="100" placeholder="e.g. Aarav" value="${escapeHTML(savedName())}">
+            <label class="field" for="popupComment">Your review</label>
+            <textarea id="popupComment" rows="4" maxlength="1000" placeholder="How was the taste, portion and value?"></textarea>
+            <button type="submit" class="primary-button" style="margin-top:18px">Submit review</button>
+            <p class="form-message" id="popupMsg" aria-live="polite"></p>
+        </form>`);
+
+    const picker = mountStarPicker($("#popupStars", body));
+
+    $("#popupForm", body).addEventListener("submit", async event => {
+        event.preventDefault();
+        const name = $("#popupName", body).value.trim();
+        const comment = $("#popupComment", body).value.trim();
+        const msg = $("#popupMsg", body);
+        const button = $("button[type=submit]", body);
+
+        msg.className = "form-message err";
+        if (!picker.value) { msg.textContent = "Please choose a star rating."; return; }
+        if (name.length < 2) { msg.textContent = "Please enter your name."; return; }
+        if (comment.length < 2) { msg.textContent = "Please write a short review."; return; }
+
+        button.disabled = true;
+        button.textContent = "Submitting...";
+        try {
+            await sendReview(item.id, name, picker.value, comment);
+            closeModal();
+            toast("Thanks! Your review was added ★");
+        } catch (error) {
+            msg.textContent = error.message;
+            button.disabled = false;
+            button.textContent = "Submit review";
+        }
+    });
 }
 
 
-// ==========================================
-// 11. EVENT LISTENERS AND STARTUP
-// ==========================================
+// ---------- Menu item card (used on shop page and meal finder) ----------
 
-document.addEventListener("DOMContentLoaded", () => {
+function menuItemCard(item, { showShop = false } = {}) {
+    const el = document.createElement("div");
+    el.className = "menu-item";
+    el.innerHTML = `
+        <div class="row">
+            <h4>${escapeHTML(item.name)}</h4>
+            <span class="price">${money(item.price)}</span>
+        </div>
+        <div class="meta">
+            ${ratingPill(item.average_rating, item.total_reviews)}
+            <span>${showShop ? "📍 " + escapeHTML(item.shop_name) + " · " : ""}${escapeHTML(item.category || "Other")}</span>
+        </div>
+        <div class="item-actions">
+            <button type="button" class="ghost-button small-button" data-act="see">See Reviews</button>
+            <button type="button" class="secondary-button small-button" data-act="write">Review</button>
+        </div>`;
+    $('[data-act="see"]', el).addEventListener("click", () => openReviews(item));
+    $('[data-act="write"]', el).addEventListener("click", () => openReviewForm(item));
+    return el;
+}
 
-    console.log("CampusBites frontend started!");
-
-    // Search button
-    document.getElementById("searchButton")
-        .addEventListener("click", searchItems);
-
-    // Reset button
-    document.getElementById("resetButton")
-        .addEventListener("click", resetFilters);
-
-    // Recommendation button
-    document.getElementById("recommendButton")
-        .addEventListener("click", getRecommendations);
-
-    // Review form submission
-    document.getElementById("reviewForm")
-        .addEventListener("submit", submitReview);
-
-    // Search when Enter is pressed
-    document.getElementById("searchInput")
-        .addEventListener("keydown", event => {
-
-            if (event.key === "Enter") {
-                searchItems();
-            }
-
-        });
-
-    // Close review popup
-    document.getElementById("closeReviews")
-        .addEventListener("click", closeReviewsModal);
-
-    // Close popup when clicking outside it
-    document.getElementById("reviewsModal")
-        .addEventListener("click", event => {
-
-            if (event.target.id === "reviewsModal") {
-                closeReviewsModal();
-            }
-
-        });
-
-    // Load website data
-    loadShops();
-
-    loadItems();
-
-});
+document.addEventListener("DOMContentLoaded", renderChrome);
